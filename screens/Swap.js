@@ -1,12 +1,7 @@
 import React from 'react';
-import { NativeBaseProvider, Text, Box, HStack } from 'native-base';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-
-const Tab = createBottomTabNavigator();
+import { Text, HStack } from 'native-base';
 
 export default function SwapScreen() {
   return (
-    <NativeBaseProvider>
-      <Text> this is a Swap page</Text>
-    </NativeBaseProvider>
+        <Text> this is a Swap page</Text>
   )};

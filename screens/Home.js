@@ -1,14 +1,17 @@
 import React from 'react';
-// 1. import `NativeBaseProvider` component
-import { NativeBaseProvider, Text, Box, HStack } from 'native-base';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Text, Box, VStack, Button, Divider } from 'native-base';
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-const Tab = createBottomTabNavigator();
-
-export default function Home() {
-  // 2. Use at the root of your app
+export default function HomeScreen() {
   return (
-    <NativeBaseProvider>
-            <Text> this is a Home page</Text>
-    </NativeBaseProvider>
+          <VStack>
+            <Box width="100%" height="40%" justifyContent="center" backgroundColor='white'>
+              <Text fontSize='36' textAlign="center"  >  $1.88 </Text>
+            </Box>
+            <Button.Group mx="auto" >
+              <Button size="lg"  width="45%" >Add Funds</Button>
+              <Button size="lg" width="45%" >Send</Button>
+            </Button.Group>
+            <Divider/>
+          </VStack>
   )};
