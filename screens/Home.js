@@ -1,21 +1,54 @@
 import React from 'react';
-import { Image, Text, Box, VStack, Button, Divider } from 'native-base';
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { SvgXml } from 'react-native-svg';
-import ShakepayLogo from '../assets/ShakepayLogo.svg'
+import {StyleSheet} from 'react-native';
+import { Text, Box, VStack, Button,Icon } from 'native-base';
+import {Ionicons} from "@expo/vector-icons"
 
 
 export default function HomeScreen() {
   return (
           <VStack>
-            <Box width="100%" height="60%" justifyContent="center" backgroundColor='white' alignItems="center">
-              <ShakepayLogo width={40} height={40} />
-              <Text fontSize='36' textAlign="center"  >  $1.88 </Text>
-              <Button.Group mx="auto" marginTop='30' >
-              <Button size="lg"  width="45%" >Add Funds</Button>
-              <Button size="lg" width="45%" >Send</Button>
-            </Button.Group>
+            <Box style={styles.boxStyle}>
+              <Text style={styles.dollarAmountText} >  $1.88 </Text>
+              <Button.Group style={styles.fundsButtonGroup}>
+                <Button _text={{color:"primary.100"}} 
+                        bg="primary.50"  
+                        size={12}
+                        width="45%"
+                        leftIcon={<Icon as={Ionicons} name="arrow-down-outline" size="sm"/>}
+                        >
+                  Add funds
+                </Button>
+                <Button _text={{color:"primary.100"}} 
+                        bg="primary.50"
+                        size={12}
+                        width="45%"
+                        leftIcon={<Icon as={Ionicons} name="arrow-up-outline" size="sm"/>}
+                        >
+                  Send
+                </Button>
+              </Button.Group>
             </Box>
-            <Divider/>
           </VStack>
   )};
+
+  const styles = StyleSheet.create({
+    boxStyle: {
+      width:'100%',
+      paddingTop:'14%',
+      paddingBottom:'5%',
+      justifyContent:'center',
+      backgroundColor:'white',
+      alignItems:'center'
+    },
+    dollarAmountText:{
+      fontSize:36,
+      textAlign:'center',
+      paddingVertical:25
+    },
+    fundsButtonGroup:{
+      justifyContent:"space-evenly",
+      paddingTop:10
+    },
+
+    
+  })
