@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import { Text, Box, VStack, Button,Icon } from 'native-base';
 import {Ionicons} from "@expo/vector-icons"
+import CoinListItem from '../components/CoinListItem'
 
 
 export default function HomeScreen() {
@@ -28,6 +29,7 @@ export default function HomeScreen() {
                 </Button>
               </Button.Group>
             </Box>
+            <CoinListItem/>
           </VStack>
   )};
 
