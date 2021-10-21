@@ -1,46 +1,33 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import { Text, Box, VStack, Button,Icon } from 'native-base';
-import {Ionicons} from "@expo/vector-icons"
+import {StyleSheet, TouchableOpacity, Text, View, } from 'react-native';
 import CoinListItem from '../components/CoinListItem'
-
+import { background } from 'styled-system';
+import Button from '../components/Button'
 
 export default function HomeScreen() {
+  // NewButton("button!!!")
   return (
-          <VStack>
-            <Box style={styles.boxStyle}>
+          <View>
+            <View style={styles.boxStyle}>
               <Text style={styles.dollarAmountText} >  $1.88 </Text>
-              <Button.Group style={styles.fundsButtonGroup}>
-                <Button _text={{color:"primary.100"}} 
-                        bg="primary.50"  
-                        size={12}
-                        width="45%"
-                        leftIcon={<Icon as={Ionicons} name="arrow-down-outline" size="sm"/>}
-                        >
-                  Add funds
-                </Button>
-                <Button _text={{color:"primary.100"}} 
-                        bg="primary.50"
-                        size={12}
-                        width="45%"
-                        leftIcon={<Icon as={Ionicons} name="arrow-up-outline" size="sm"/>}
-                        >
-                  Send
-                </Button>
-              </Button.Group>
-            </Box>
+                <View style={styles.fundsButtonGroup}>
+                  <Button buttonText="Add funds" />
+                  <Button buttonText="Send" />
+                </View>
+            </View>
             <CoinListItem/>
-          </VStack>
+          </View>
   )};
 
   const styles = StyleSheet.create({
     boxStyle: {
       width:'100%',
-      paddingTop:'14%',
-      paddingBottom:'5%',
+      paddingBottom:15,
       justifyContent:'center',
       backgroundColor:'white',
-      alignItems:'center'
+      alignItems:'center',
+      borderBottomColor:'#f0f5ff',
+      borderBottomWidth: 2,
     },
     dollarAmountText:{
       fontSize:36,
@@ -48,9 +35,8 @@ export default function HomeScreen() {
       paddingVertical:25
     },
     fundsButtonGroup:{
-      justifyContent:"space-evenly",
-      paddingTop:10
+      flexDirection:'row',
+      justifyContent:"space-between",
+      paddingTop:15
     },
-
-    
   })

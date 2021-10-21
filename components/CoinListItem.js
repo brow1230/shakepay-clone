@@ -1,30 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import { Text, HStack, Box, VStack, Heading, Flex, Center } from 'native-base';
+import { Text, View, StyleSheet } from 'react-native';
 import BTC from '../assets/bitcoin-btc-logo.svg'
 import ETH from '../assets/eth.svg'
 import { SvgUri } from 'react-native-svg';
 import { alignItems, fontSize } from 'styled-system';
 
 
-
-// <HStack>
-            {/* <BTC  width={40} height={40}/> */}
-        //     <SvgUri width={40} height={40} uri="http://192.168.1.110:5000/bitcoin-btc-logo.svg"/>
-        //     <VStack>
-        //         <Text> Bitcoin </Text>a
-        //         <Text> $69,000 </Text>
-        //     </VStack>
-        //     <VStack>
-        //         <Text> 0.00 </Text>
-        //         <Text> $4.85 </Text>
-        //     </VStack>
-        // </HStack>
 export default function CoinListItem() {
     const [coins, setCoins] = useState([])
 
-
-    // useEffect(getCoinList())
     useEffect(() => {
         const url = "http://192.168.1.110:3030/coins";
     
@@ -43,41 +27,61 @@ export default function CoinListItem() {
     }, []);
     // getCoinList()
   return (
-    <Box>
+    <View>
         
         {
-            coins.map(function (coin, i) {
-                return(
-                    <HStack style={styles.coinListItem}>
-                        <SvgUri width="20%" height={33} uri={coin.logo}/>
-                        <VStack style={styles.coin}>
-                            <Text fontSize={18}> {coin.name} </Text>
-                            <Text> ${coin.price} </Text>
-                        </VStack>
-                        <VStack stlye={styles.wallet}>
-                            <Text> {coin.coinHeld} </Text> 
-                            <Text> ${coin.valueHeld} </Text>
-                        </VStack>
-                    </HStack>
-            )})
+            coins.map(function (coin, i) {   
+              let price = coin.price
+                  price = price.toLocaleString("en-US", {style:"currency", currency:"USD"})
+                    return(
+                        <View style={styles.coinListItem}>
+                            <SvgUri width="20%" height={33} uri={coin.logo}/>
+                            <View style={styles.coin}>
+                                <Text style={styles.coinName}> {coin.name} </Text>
+                                <Text style={styles.coinPrice}> {price} </Text>
+                            </View>
+                            <View stlye={styles.wallet}>
+                                <Text style={styles.coinHeld}> {parseFloat(coin.coinHeld).toFixed(2)} </Text> 
+                                <Text style={styles.valueHeld}> ${parseFloat(coin.valueHeld).toFixed(2)} </Text>
+                            </View>
+                        </View>
+                 )
+            })
         }
-    </Box>
+    </View>
   )};
 
   const styles = StyleSheet.create({
       coinListItem: {
-        height: "25%",
+        flexDirection: 'row',
+        height: 80,
         width:"100%",
         backgroundColor:"white",
         alignItems: 'center',
         alignSelf:'center',
       },
-      coinLogo:{
-      },
       coin:{
-          width:"70%",
+        width:"64%",
+      },
+      coinName:{
+        fontSize:23,
+      },
+      coinPrice: {
+          color:'grey',
+          fontSize:14,
       },
       wallet: {
-        width: "10%",
-      }
+        width: "16%",
+      },
+      coinHeld:{
+        textAlign:'right',
+        // borderWidth:1,
+        fontSize:18,
+      },
+      valueHeld:{
+        textAlign:'right',
+        color:'grey',
+        // borderWidth:1,
+        fontSize:14,
+      },
   })

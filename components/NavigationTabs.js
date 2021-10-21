@@ -10,12 +10,6 @@ import ShakepayLogo from '../assets/ShakepayLogo.svg'
 
 const Tab = createBottomTabNavigator();
 
-// function LogoTitle(){
-//   return(
-//     <ShakepayLogo width=40
-//   )
-// }
-
 const Tabs = () => {
   return (
           <Tab.Navigator >
