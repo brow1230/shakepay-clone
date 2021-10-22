@@ -8,7 +8,7 @@ import Tabs from './components/NavigationTabs'
 export default function App() {
 
   return (    
-      <SafeAreaView flex='1' backgroundColor="white" >  
+      <SafeAreaView flex='1'>  
         <NavigationContainer>
           <Tabs/>
         </NavigationContainer>

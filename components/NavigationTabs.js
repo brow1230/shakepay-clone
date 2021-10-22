@@ -1,4 +1,5 @@
 import React from 'react';
+import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HomeStackScreen from '../screens/Home';
@@ -16,7 +17,13 @@ const Tabs = () => {
             <Tab.Screen 
               name="Home" 
               component={HomeStackScreen}
-              options={{headerTitle : () => <ShakepayLogo width={40} height={40}/>}}/>
+              options={{headerTitle : () => <ShakepayLogo width={40} height={40}/>,
+                        headerStyle: {
+                          elevation: 0, // remove shadow on Android
+                          shadowOpacity: 0, // remove shadow on iOS
+                          borderBottomWidth: 0 // Just in case.
+                      }}}
+              />
             <Tab.Screen name="Card" component={CardScreen}/>
             <Tab.Screen name="Swap" component={SwapScreen}/>
             <Tab.Screen name="SendCoin" component={SendCoinScreen}/>
@@ -24,5 +31,4 @@ const Tabs = () => {
           </Tab.Navigator>
   );
 }
-
 export default Tabs;
