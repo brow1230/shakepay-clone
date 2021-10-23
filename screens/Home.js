@@ -1,25 +1,78 @@
-import React from 'react';
+import React, {useState, useCallback} from 'react';
 import {StyleSheet,  Text, View, ScrollView, RefreshControl } from 'react-native';
 import CoinListItem from '../components/CoinListItem'
 import Button from '../components/Button'
 
-export default function HomeScreen(){
+export default function HomeScreen(){ 
+  const [cryptoPrices, setCryptoPrices] = useState([])
+  const [coins, setCoins] = useState([])
+  const [totalValue, setTotalValue] = useState(0)
+
   
+  const getUserData = async () => {
+    const url = "http://192.168.1.110:3030/coins";
+    try {
+      const response = await fetch(url);
+      const json = await response.json();
+      setCoins(json.data)
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  const getCryptoPrices = async () => {
+    let url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?convert=CAD'
+    const options = {
+      method: 'GET',
+      qs: {
+        'start': '1',
+        'limit': '1',
+        'convert': 'AUD'
+      },
+      headers:{
+        'X-CMC_PRO_API_KEY':'d2a0ea04-8e48-45a5-8fb6-641ee66c181d'
+      },
+      json: true,
+      gzip: true
+    }
+    try {
+        const response = await fetch(url, options)
+        const json = await response.json();
+        setCryptoPrices(json.data)
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
+
+  function addTotalValue(){
+    let cointaner = 0
+    coins.forEach((coin)=>{
+      console.log(coin)
+      cointaner = cointaner + coin.valueHeld 
+    })
+    cointaner = cointaner.toLocaleString("en-US", {style:"currency", currency:"USD"})
+    setTotalValue(cointaner)
+  }
+  
+
   // refresh 
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   }
-  const [refreshing, setRefreshing] = React.useState(false);
-  const onRefresh = React.useCallback(() => {
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
-    wait(1000).then(() => setRefreshing(false));
+    getUserData();
+    getCryptoPrices();
+    addTotalValue()
+    wait(250).then(() => setRefreshing(false));
   }, []);
 
 
   return (
           <View style={styles.parentView}>
             <View style={styles.boxStyle}>
-              <Text style={styles.dollarAmountText} >  $1.88 </Text>
+              <Text style={styles.dollarAmountText} >  {totalValue} </Text>
                 <View style={styles.fundsButtonGroup}>
                   <Button buttonText="Add funds" buttonIcon="up" />
                   <Button buttonText="Send" buttonIcon="down"/>
@@ -34,7 +87,14 @@ export default function HomeScreen(){
           />
         }
       >
-        <CoinListItem/>
+        <CoinListItem 
+          coins={coins} 
+          cryptoPrices={cryptoPrices} 
+          getCoins={setCoins} 
+          getPrices={setCryptoPrices}
+          totalValue={totalValue} 
+          setTotalValue={setTotalValue}
+          />
         </ScrollView>
             
           </View>

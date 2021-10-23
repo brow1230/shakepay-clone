@@ -22,12 +22,26 @@ const Tabs = () => {
                           elevation: 0, // remove shadow on Android
                           shadowOpacity: 0, // remove shadow on iOS
                           borderBottomWidth: 0 // Just in case.
-                      }}}
+                        },
+                        tabBarLabel:''
+                      }}
               />
-            <Tab.Screen name="Card" component={CardScreen}/>
-            <Tab.Screen name="Swap" component={SwapScreen}/>
-            <Tab.Screen name="SendCoin" component={SendCoinScreen}/>
-            <Tab.Screen name="Settings" component={SettingsScreen}/>
+            <Tab.Screen 
+              name="Card" 
+              component={CardScreen}
+              options={{ tabBarLabel:'' }}/>
+            <Tab.Screen 
+              name="Swap" 
+              component={SwapScreen}
+              options={{ tabBarLabel:'' }}/>
+            <Tab.Screen 
+              name="SendCoin" 
+              component={SendCoinScreen}
+              options={{ tabBarLabel:'' }}/>
+            <Tab.Screen 
+              name="Settings" 
+              component={SettingsScreen}
+              options={{ tabBarLabel:'' }}/>
           </Tab.Navigator>
   );
 }

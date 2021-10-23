@@ -3,59 +3,12 @@ import { Text, View, StyleSheet } from 'react-native';
 import BTC from '../assets/bitcoin-btc-logo.svg'
 import ETH from '../assets/eth.svg'
 import { SvgUri } from 'react-native-svg';
-import { alignItems, fontSize } from 'styled-system';
 
-
-export default function CoinListItem() {
-  const [cryptoPrices, setCryptoPrices] = useState([])
-  const [coins, setCoins] = useState([])
-
-  // let cryptoPrices 
-  useEffect(() => {
-    const url = "http://192.168.1.110:3030/coins";
-
-    const getUserData = async () => {
-      try {
-        const response = await fetch(url);
-        const json = await response.json();
-        setCoins(json.data)
-      } catch (error) {
-        console.log("error", error);
-      }
-    };
-
-    getUserData();
-
-    const getCryptoPrices = async () => {
-      let url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?convert=CAD'
-      const options = {
-        method: 'GET',
-        qs: {
-          'start': '1',
-          'limit': '1',
-          'convert': 'AUD'
-        },
-        headers:{
-          'X-CMC_PRO_API_KEY':'d2a0ea04-8e48-45a5-8fb6-641ee66c181d'
-        },
-        json: true,
-        gzip: true
-}
-
-      try {
-          const response = await fetch(url, options)
-          const json = await response.json();
-          setCryptoPrices(json.data)
-      } catch (error) {
-        console.log("error", error);
-      }
-    }
-    getCryptoPrices();
-}, []);
-console.log(cryptoPrices[0])
+export default function CoinListItem(props) {
+  const [cryptoPrices, setCryptoPrices] = [props.cryptoPrices, props.setCryptoPrices]
+  const [coins, setCoins] = [props.coins, props.setCoins]
   return (
     <View>
-        
         {
             coins.map(function (coin, i) {
               let coinPriceData
@@ -68,14 +21,14 @@ console.log(cryptoPrices[0])
               }
               matchCoinToPrice()
               // console.log(coinPriceData)
-              let [price, valueHeld] = [coin.price, coin.valueHeld]
-              // let [price, valueHeld] = [coinPriceData, coin.valueHeld]
+              let [price, valueHeld] = [0,0] 
+              coinPriceData?(
+                [price, valueHeld] = [coinPriceData, coin.valueHeld]
+              ) : (
+                [price, valueHeld] = [coin.price, coin.valueHeld]
+                )
                   price = price.toLocaleString("en-US", {style:"currency", currency:"USD"})
                   valueHeld = valueHeld.toLocaleString("en-US", {style:"currency", currency:"USD"})
-
-
-
-
                     return(
                         <View style={styles.coinListItem} key={i}>
                             <SvgUri width="14%" height={35} uri={coin.logo}/>
@@ -103,7 +56,7 @@ console.log(cryptoPrices[0])
         alignSelf:'center',
       },
       coin:{
-        width:"72%",
+        width:"50%",
       },
       coinName:{
         fontSize:20,
@@ -115,15 +68,19 @@ console.log(cryptoPrices[0])
           fontWeight:'300'
       },
       wallet: {
-        width: "16%",
+        width: "36%",
+        // alignItems:'flex-end'
       },
       coinHeld:{
+        width:130,
         textAlign:'right',
         fontSize:20,
-        paddingBottom:5
+        paddingBottom:5,
+        
 
       },
       valueHeld:{
+        width:130,
         textAlign:'right',
         color:'grey',
         fontSize:16,

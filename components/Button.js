@@ -1,36 +1,34 @@
 import React from 'react'
-import {StyleSheet, TouchableOpacity, Text, View, } from 'react-native';
+import {StyleSheet, TouchableOpacity, Text, View, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'
 
 export default function Button(props) {
     let ButtonContent = ()=>{
         if(props.buttonIcon === "up"){
             return (
-                <TouchableOpacity style={styles.button}>
-                    <Ionicons name="arrow-down-outline" color="#079efe" size='25'/>
+                <Pressable style={styles.button} onPress={props.onButtonPress}>
+                    <Ionicons name="arrow-down-outline" color="#079efe" size={25}/>
                     <Text style={styles.buttonText}>{props.buttonText}</Text>
-                </TouchableOpacity>
+                </Pressable>
             )
 
         }else if (props.buttonIcon === "down") {
             return (
-                <TouchableOpacity style={styles.button}>
-                    <Ionicons name="arrow-up-outline" color="#079efe" size='25'/>
+                <Pressable style={styles.button} onPress={props.onButtonPress}>
+                    <Ionicons name="arrow-up-outline" color="#079efe" size={25}/>
                     <Text style={styles.buttonText}>{props.buttonText}</Text>
-                </TouchableOpacity>
+                </Pressable>
             )
         }else{
             return (
-                <TouchableOpacity style={styles.button}>
+                <Pressable style={styles.button} onPress={props.onButtonPress}>
                     <Text style={styles.buttonText}>{props.buttonText}</Text>
-                </TouchableOpacity>
+                </Pressable>
             )
         }
     }
 
-    return(
-     
-    <ButtonContent/>)
+    return <ButtonContent/>
 }
 
 let styles =StyleSheet.create({
