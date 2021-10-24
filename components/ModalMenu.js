@@ -3,7 +3,7 @@ import {StyleSheet,  Text, View, ScrollView, RefreshControl } from 'react-native
 
 export default function ModalMenu(props) {
     return (
-        <View>
+        <View style={styles.parentView}>
             <View>
                 <Text>add some funds yo</Text>
                 <Text>add some funds yo</Text>
@@ -16,3 +16,8 @@ export default function ModalMenu(props) {
         </View>
     )
 }
+let styles = StyleSheet.create({
+    parentView:{
+        backgroundColor: 'transparent'
+    }
+})

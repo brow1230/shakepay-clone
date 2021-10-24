@@ -1,6 +1,6 @@
 import React from 'react';
-import {StyleSheet,  Text, View, ScrollView, Image, TextInput } from 'react-native';
-import { Ionicons } from '@expo/vector-icons'
+import {StyleSheet,  Text, View, ScrollView, Pressable } from 'react-native';
+import { alignContent, alignSelf, flexDirection, justifyContent, style } from 'styled-system';
 import ListOfOptions from './SettingsScreen/ListOfOptions';
 import VerificationStatus from './SettingsScreen/VerificationStatus';
 export default function SettingsScreen() {
@@ -47,30 +47,43 @@ export default function SettingsScreen() {
       rewards:0
     }
   }
-  // const VerificationStatus = () => {
-  
   return (
     <ScrollView style={styles.parentView}>
-      <View>
-        <Text>Hello @{user.name}👋</Text>
+      
+      <View style={styles.accountView}>
+        <Text style={styles.greeting}>Hello <Text style={styles.userName}>@{user.name}</Text>👋</Text>
         <VerificationStatus user={user}/>
       </View> 
-      <Text>Interact security awnser: {user.interactAnwser}</Text>
-        <View>
-          <Text>My referals</Text>
-          <View>
-            <Text>{user.signUps.number}</Text>
-            <Text>Signups</Text>
-          </View>
-          <View>
-            <Text>{user.signUps.activated}</Text>
-            <Text>Activated</Text>
-          </View>
-          <View>
-            <Text>${user.signUps.rewards}</Text>
-            <Text>Rewards</Text>
+
+      <View style={styles.interactAnwserView}>
+        <Text style={styles.interactText}>Interact security awnser: </Text>
+          <Pressable style={styles.interactAnwserButton}> 
+            <Text style={styles.interactAnwser}>{user.interactAnwser}</Text>
+          </Pressable>
+      </View>
+        
+        <View style={styles.referalsView}>
+          <Text style={styles.referalsTitle}>My referals</Text>
+
+          <View style={styles.referalsGroupContainer}>
+            <View style={styles.referalGroup}>
+              <Text style={styles.referalNumber}>{user.signUps.number}</Text>
+              <Text style={styles.referalText}>Signups</Text>
+            </View>
+          
+            <View style={styles.referalGroup}>
+              <Text style={styles.referalNumber}>{user.signUps.activated}</Text>
+              <Text style={styles.referalText}>Activated</Text>
+            </View>
+          
+            <View style={styles.referalGroup}>
+              <Text style={styles.referalNumber}>${user.signUps.rewards}</Text>
+              <Text style={styles.referalText}>Rewards</Text>
+            </View>
           </View>
         </View>
+
+
       <ListOfOptions/>
 
     </ScrollView>
@@ -90,6 +103,76 @@ let styles = StyleSheet.create({
   parentView:{
     backgroundColor:'white',
     flex:1,
+  },
+  accountView:{
+    marginHorizontal:'5%',
+    paddingVertical:10,
+  },
+  greeting:{
+    fontSize:20,
+    paddingVertical:15,
+  },
+  userName:{
+    fontWeight:'500'
+  },
+  interactAnwserView:{
+    flex:1,
+    flexDirection:'row',
+    alignContent:'center'
+    // justifyContent:
+  },
+  interactText:{
+    // borderWidth:1,
+    marginLeft:"5%",
+    fontSize:16,
+    paddingVertical:10,
+  },
+  interactAnwser:{
+    color:"#079efe",
+    fontSize:16,
+    fontWeight:'600',
+  },
+  interactAnwserButton:{
+    flex:1,
+    alignContent:'center',
+    // borderWidth:1,
+    marginRight:"5%",
+    paddingVertical:10,
+    // marginHorizontal:"5%",
+    // fontSize:16,
+    // paddingVertical:10,
+  },
+  referalsView:{
+    paddingTop:20,
+    borderBottomColor:'#f0f5ff',
+    borderBottomWidth: 2,
+  },
+  referalsGroupContainer:{
+    flex:1,
+    flexDirection:'row',
+    justifyContent:'space-evenly',
+    paddingVertical:30,
+  },
+  referalsTitle:{
+    
+    marginHorizontal:"5%",
+    fontSize:16
+  },
+  referalGroup:{
+    // flex:1,
+    // justifyContent:'center'
+    alignContent:'center',
+  },
+  referalNumber:{
+    
+    textAlign:'center',
+    fontSize:20,
+  },
+  referalText:{
+    textAlign:'center',
+    paddingTop:10,
+    color:'#627fae'
+
   },
   
 })
