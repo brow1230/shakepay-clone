@@ -4,27 +4,33 @@ import { Ionicons } from '@expo/vector-icons'
 
 export default function Button(props) {
     let ButtonContent = ()=>{
-        if(props.buttonIcon === "up"){
-            return (
-                <Pressable style={styles.button} onPress={props.onButtonPress}>
-                    <Ionicons name="arrow-down-outline" color="#079efe" size={25}/>
-                    <Text style={styles.buttonText}>{props.buttonText}</Text>
-                </Pressable>
-            )
-
-        }else if (props.buttonIcon === "down") {
-            return (
-                <Pressable style={styles.button} onPress={props.onButtonPress}>
-                    <Ionicons name="arrow-up-outline" color="#079efe" size={25}/>
-                    <Text style={styles.buttonText}>{props.buttonText}</Text>
-                </Pressable>
-            )
-        }else{
-            return (
-                <Pressable style={styles.button} onPress={props.onButtonPress}>
-                    <Text style={styles.buttonText}>{props.buttonText}</Text>
-                </Pressable>
-            )
+        switch (props.buttonIcon) {
+            case "up":
+                return (
+                    <Pressable style={styles.button} onPress={props.onButtonPress}>
+                        <Ionicons name="arrow-down-outline" color="#079efe" size={25}/>
+                        <Text style={styles.buttonText}>{props.buttonText}</Text>
+                    </Pressable>
+                ) 
+            case "down":
+                return (
+                    <Pressable style={styles.button} onPress={props.onButtonPress}>
+                        <Ionicons name="arrow-up-outline" color="#079efe" size={25}/>
+                        <Text style={styles.buttonText}>{props.buttonText}</Text>
+                    </Pressable>
+                )
+            case "full":
+                return (
+                    <Pressable style={styles.button} onPress={props.onButtonPress}>
+                        <Text style={styles.buttonText}>{props.buttonText}</Text>
+                    </Pressable>
+                )
+            default:
+                return (
+                    <Pressable style={styles.button} onPress={props.onButtonPress}>
+                        <Text style={styles.buttonText}>{props.buttonText}</Text>
+                    </Pressable>
+                )
         }
     }
 
