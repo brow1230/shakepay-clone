@@ -45,10 +45,10 @@ export default function CardInformation() {
 
   return (
       <View style={styles.cardGroupContainer}>
-        {pageCardInfoContent.map((CardInfo) => {
+        {pageCardInfoContent.map((CardInfo, i) => {
           let source = imagePath + CardInfo
         return (
-          <View style={styles.cardContainer}>
+          <View style={styles.cardContainer} key={i}>
             {/* <SvgUri width="10%" uri={CardInfo.img}/> */}
             <Image source={CardInfo.img} style={styles.image}/>
             {/* <Cardcoins/> */}
