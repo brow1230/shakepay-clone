@@ -7,40 +7,58 @@ import { SvgUri } from 'react-native-svg';
 export default function CoinListItem(props) {
   const [cryptoPrices, setCryptoPrices] = [props.cryptoPrices, props.setCryptoPrices]
   const [coins, setCoins] = [props.coins, props.setCoins]
+
   return (
     <View>
-        {
+        {            
             coins.map(function (coin, i) {
+              if(coin.ticker === 'CAD'){
+                return(
+                  <View style={styles.coinListItem} key={i}>
+                    <SvgUri width="14%" height={38} uri={coin.logo}/>
+                    <View style={styles.coin}>
+                        <Text style={styles.coinName}> {coin.name} </Text>
+                    </View>
+                    <View stlye={styles.wallet}>
+                        <Text style={styles.coinHeld}> {parseFloat(coin.coinHeld).toFixed(2)} </Text> 
+                    </View>
+                  </View>
+                )
+              }
               let coinPriceData
+              let trueValueHeld = 0
               let matchCoinToPrice = () => {
                 cryptoPrices.forEach(function(cryptoCoinPrice, i2){
                   if(cryptoCoinPrice.symbol === coin.ticker){
                     coinPriceData = cryptoCoinPrice.quote.CAD.price
+                    trueValueHeld = coinPriceData * coin.coinHeld
+                    // getTotalValue(totalValue+true)
                   }
                 })
               }
               matchCoinToPrice()
-              // console.log(coinPriceData)
-              let [price, valueHeld] = [0,0] 
+              let price = 1
               coinPriceData?(
-                [price, valueHeld] = [coinPriceData, coin.valueHeld]
+                price = coinPriceData,
+                console.log(price)
               ) : (
-                [price, valueHeld] = [coin.price, coin.valueHeld]
-                )
-                  price = price.toLocaleString("en-US", {style:"currency", currency:"USD"})
-                  valueHeld = valueHeld.toLocaleString("en-US", {style:"currency", currency:"USD"})
-                    return(
-                        <View style={styles.coinListItem} key={i}>
-                            <SvgUri width="14%" height={35} uri={coin.logo}/>
-                            <View style={styles.coin}>
-                                <Text style={styles.coinName}> {coin.name} </Text>
-                                <Text style={styles.coinPrice}> {price} </Text>
-                            </View>
-                            <View stlye={styles.wallet}>
-                                <Text style={styles.coinHeld}> {parseFloat(coin.coinHeld).toFixed(2)} </Text> 
-                                <Text style={styles.valueHeld}> {valueHeld} </Text>
-                            </View>
+                price = 0,
+                console.log(price)
+              )
+                      price = parseFloat(price).toFixed(2).toLocaleString("en-US", {style:"currency", currency:"USD"})
+              trueValueHeld = trueValueHeld.toLocaleString("en-US", {style:"currency", currency:"USD"})
+                return(
+                    <View style={styles.coinListItem} key={i}>
+                        <SvgUri width="14%" height={35} uri={coin.logo}/>
+                        <View style={styles.coin}>
+                            <Text style={styles.coinName}> {coin.name} </Text>
+                            <Text style={styles.coinPrice}> {price} </Text>
                         </View>
+                        <View stlye={styles.wallet}>
+                            <Text style={styles.coinHeld}> {parseFloat(coin.coinHeld).toFixed(2)} </Text> 
+                            <Text style={styles.valueHeld}> {trueValueHeld} </Text>
+                        </View>
+                    </View>
                  )
             })
         }
@@ -50,6 +68,7 @@ export default function CoinListItem(props) {
   const styles = StyleSheet.create({
       coinListItem: {
         flexDirection: 'row',
+        margin:10,
         height: 80,
         width:"100%",
         alignItems: 'center',

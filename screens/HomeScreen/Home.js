@@ -1,16 +1,19 @@
 import React, {useState, useCallback} from 'react';
 import {StyleSheet,  Text, View, ScrollView, RefreshControl } from 'react-native';
-import CoinListItem from '../components/CoinListItem'
-import Button from '../components/Button'
+import CoinListItem from '../../components/CoinListItem'
+import Button from '../../components/Button'
+import { Container } from 'native-base';
+import ModalMenu from '../../components/ModalMenu';
 
 export default function HomeScreen(){ 
   const [cryptoPrices, setCryptoPrices] = useState([])
   const [coins, setCoins] = useState([])
   const [totalValue, setTotalValue] = useState(0)
 
-  
+
   const getUserData = async () => {
-    const url = "http://192.168.1.110:3030/coins";
+    console.log('backend called')
+    const url = "http://192.168.1.109:3030/coins";
     try {
       const response = await fetch(url);
       const json = await response.json();
@@ -21,6 +24,7 @@ export default function HomeScreen(){
   };
 
   const getCryptoPrices = async () => {
+    console.log('api called')
     let url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?convert=CAD'
     const options = {
       method: 'GET',
@@ -44,16 +48,27 @@ export default function HomeScreen(){
     }
   }
 
-  function addTotalValue(){
-    let cointaner = 0
-    coins.forEach((coin)=>{
-      console.log(coin)
-      cointaner = cointaner + coin.valueHeld 
-    })
-    cointaner = cointaner.toLocaleString("en-US", {style:"currency", currency:"USD"})
-    setTotalValue(cointaner)
-  }
-  
+
+function getTrueValue(){
+  console.log('getting value')
+  let ttv = 0
+  let coinPriceData
+  coins.forEach(coin => {
+      cryptoPrices.forEach(price =>{
+        if(coin.ticker === price.symbol){
+          console.log(coin.coinHeld)
+          coinPriceData = price.quote.CAD.price
+          let value = parseFloat(coinPriceData).toFixed(2) * coin.coinHeld 
+          console.log("one", value)
+          console.log("two", ttv)
+          
+          ttv = ttv + value
+          console.log("three", ttv)
+        }
+      })
+  });  
+  setTotalValue(ttv)
+}
 
   // refresh 
   const wait = (timeout) => {
@@ -64,17 +79,18 @@ export default function HomeScreen(){
     setRefreshing(true);
     getUserData();
     getCryptoPrices();
-    addTotalValue()
-    wait(250).then(() => setRefreshing(false));
+    getTrueValue();
+    wait(600).then(() => { 
+      setRefreshing(false)});
   }, []);
 
 
   return (
           <View style={styles.parentView}>
             <View style={styles.boxStyle}>
-              <Text style={styles.dollarAmountText} >  {totalValue} </Text>
+              <Text style={styles.dollarAmountText} >  {parseFloat(totalValue).toFixed(2)} </Text>
                 <View style={styles.fundsButtonGroup}>
-                  <Button buttonText="Add funds" buttonIcon="up" />
+                  <Button buttonText="Add funds" buttonIcon="up" onButtonPress={<ModalMenu/>}/>
                   <Button buttonText="Send" buttonIcon="down"/>
                 </View>
             </View>
@@ -92,8 +108,7 @@ export default function HomeScreen(){
           cryptoPrices={cryptoPrices} 
           getCoins={setCoins} 
           getPrices={setCryptoPrices}
-          totalValue={totalValue} 
-          setTotalValue={setTotalValue}
+          totalValue={totalValue}
           />
         </ScrollView>
             

@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import HomeStackScreen from '../screens/Home';
+import HomeStackScreen from '../screens/HomeScreen/Home';
 import CardScreen from '../screens/Card';
 import SwapScreen from '../screens/Swap';
 import SendCoinScreen from '../screens/SendCoin';
@@ -29,19 +29,43 @@ const Tabs = () => {
             <Tab.Screen 
               name="Card" 
               component={CardScreen}
-              options={{ tabBarLabel:'' }}/>
+              options={{ 
+                headerStyle: {
+                  elevation: 0, // remove shadow on Android
+                  shadowOpacity: 0, // remove shadow on iOS
+                  borderBottomWidth: 0 // Just in case.
+                },
+                tabBarLabel:'' }}/>
             <Tab.Screen 
               name="Swap" 
               component={SwapScreen}
-              options={{ tabBarLabel:'' }}/>
+              options={{ 
+                headerStyle: {
+                  elevation: 0, // remove shadow on Android
+                  shadowOpacity: 0, // remove shadow on iOS
+                  borderBottomWidth: 0 // Just in case.
+                },
+                tabBarLabel:'' }}/>
             <Tab.Screen 
               name="SendCoin" 
               component={SendCoinScreen}
-              options={{ tabBarLabel:'' }}/>
+              options={{ 
+                headerStyle: {
+                  elevation: 0, // remove shadow on Android
+                  shadowOpacity: 0, // remove shadow on iOS
+                  borderBottomWidth: 0 // Just in case.
+                },
+                tabBarLabel:'' }}/>
             <Tab.Screen 
               name="Settings" 
               component={SettingsScreen}
-              options={{ tabBarLabel:'' }}/>
+              options={{ 
+                headerStyle: {
+                  elevation: 0, // remove shadow on Android
+                  shadowOpacity: 0, // remove shadow on iOS
+                  borderBottomWidth: 0 // Just in case.
+                },
+                tabBarLabel:'' }}/>
           </Tab.Navigator>
   );
 }
