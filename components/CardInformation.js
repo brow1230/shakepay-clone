@@ -59,20 +59,33 @@ export default function CardInformation() {
       </View>
   )};
 
+// Colors used
+// Light Blue: #f0f5ff
+// Other Blue: #079efe
+// Grey: #627fae
+
+//  GREY BORDER SEPERATOR
+//    borderBottomColor:'#f0f5ff',
+//    borderBottomWidth: 2,
+
 let styles = StyleSheet.create({
   parentView:{
+    // width:'100%',
     backgroundColor:'white',
   },
   cardGroupContainer:{
-    width:'90%',
-    margin:'5%'
+    width:'100%',
   },
   cardContainer:{
     paddingVertical:10,
+    paddingBottom:25,
+    borderBottomColor:'#f0f5ff',
+    borderBottomWidth: 2,
   },
   image:{
-    width:40,
-    //  padding:60,
+    width:50,
+    paddingVertical:50,
+    marginLeft:'7%',
     resizeMode:'contain',
   },
   gpayImage:{
@@ -81,11 +94,16 @@ let styles = StyleSheet.create({
     resizeMode:'contain',
   },
   headerText:{
-    fontSize: 27,
-    fontWeight:'400',
+    marginHorizontal:'7%',
+    fontSize: 26,
+    fontWeight:'500',
+    lineHeight:30,
   },
   bodyText:{
-    fontSize: 18,
-    color:'grey'
+    marginHorizontal:'7%',
+    fontSize: 19,
+    fontWeight:'300',
+    lineHeight:30,
+    color:'#627fae'
   },
 })
