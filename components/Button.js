@@ -21,8 +21,8 @@ export default function Button(props) {
                 )
             case "full":
                 return (
-                    <Pressable style={styles.button} onPress={props.onButtonPress}>
-                        <Text style={styles.buttonText}>{props.buttonText}</Text>
+                    <Pressable style={styles.buttonFull} onPress={props.onButtonPress}>
+                        <Text style={styles.buttonFullText}>{props.buttonText}</Text>
                     </Pressable>
                 )
             default:
@@ -49,10 +49,30 @@ let styles =StyleSheet.create({
         backgroundColor: '#f0f5ff',
         borderRadius: 5
     },
+    buttonFull:{
+        flex:1,
+        flexDirection:'row',
+        justifyContent:'center',
+        alignSelf:'center',
+        // marginVertical:,
+        marginBottom:15,
+        height:'10%',
+        paddingVertical:11,
+        width:"90%",
+        backgroundColor: '#f0f5ff',
+        borderRadius: 5
+    },
     buttonText:{
         marginLeft:5,
         textAlign:'center',
         fontSize: 17,
         fontWeight:"500",
-        color: '#079efe',    } 
+        color: '#079efe',    
+    },
+    buttonFullText:{
+        marginLeft:5,
+        textAlign:'center',
+        fontSize: 14,
+        fontWeight:"500",
+        color: '#079efe',    }  
 })

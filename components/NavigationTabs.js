@@ -47,7 +47,7 @@ const Tabs = () => {
                 },
                 tabBarLabel:'' }}/>
             <Tab.Screen 
-              name="SendCoin" 
+              name="Shakepay a friend" 
               component={SendCoinScreen}
               options={{ 
                 headerStyle: {
