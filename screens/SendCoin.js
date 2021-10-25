@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet,  Text, View, ScrollView, Image, TextInput } from 'react-native';
+import {StyleSheet,  Text, View, ScrollView, Image, TextInput, Alert } from 'react-native';
 import { borderRadius } from 'styled-system';
 import Button from '../components/Button';
 
@@ -7,6 +7,14 @@ import Button from '../components/Button';
 export default function SendCoinScreen() {
   const [text, onTextChange] = useState("")
   
+  const CreateAlert = () =>
+    Alert.alert(
+      "Fakepay",
+      "This isn't Shakepay. This is intended to be a demo only",
+      [
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ]
+    );
   return (
     <View style={styles.parentView}>
       
@@ -18,7 +26,7 @@ export default function SendCoinScreen() {
         <ScrollView style={styles.resultsContainer}> 
           <Text style={styles.resultsFoundTitle}>NO RESTULTS FOUND</Text>
         </ScrollView>
-        <Button buttonIcon="full" buttonText="Enable Phone Contacts"/>
+        <Button buttonIcon="full" buttonText="Enable Phone Contacts" onButtonPress={()=>CreateAlert()}/>
     </View>
     )};
 

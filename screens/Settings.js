@@ -1,8 +1,9 @@
 import React from 'react';
-import {StyleSheet,  Text, View, ScrollView, Pressable } from 'react-native';
-import { alignContent, alignSelf, flexDirection, justifyContent, style } from 'styled-system';
+import {StyleSheet,  Text, View, ScrollView, Pressable, Alert } from 'react-native';
 import ListOfOptions from './SettingsScreen/ListOfOptions';
 import VerificationStatus from './SettingsScreen/VerificationStatus';
+
+
 export default function SettingsScreen() {
   let user = {
     username: 'username',
@@ -47,6 +48,15 @@ export default function SettingsScreen() {
       rewards:0
     }
   }
+
+  const CreateAlert = () =>
+    Alert.alert(
+      "Fakepay",
+      "This isn't Shakepay. This is intended to be a demo only",
+      [
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ]
+    );
   return (
     <ScrollView style={styles.parentView}>
       
@@ -57,7 +67,7 @@ export default function SettingsScreen() {
 
       <View style={styles.interactAnwserView}>
         <Text style={styles.interactText}>Interact security awnser: </Text>
-          <Pressable style={styles.interactAnwserButton}> 
+          <Pressable style={styles.interactAnwserButton} onPress={()=>CreateAlert()}> 
             <Text style={styles.interactAnwser}>{user.interactAnwser}</Text>
           </Pressable>
       </View>

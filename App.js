@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
-import {SafeAreaView, Text} from 'react-native';
+import {SafeAreaView, View, Text} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import ShakepayLogo from './assets/ShakepayLogo.svg'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Tabs from './components/NavigationTabs'
-import Button from './components/Button';
+import ModalMenu from './components/ModalMenu';
 
 export default function App() {
+  
+  let Stack = createNativeStackNavigator()
+  return ( 
+    <SafeAreaView flex='1'>
+      <NavigationContainer>
+            <Tabs/>
+      </NavigationContainer>
+    </SafeAreaView>
+    );
+  }
+
+  // UNUSED CODE 
+
   // const [userData, setUserData] = useState(null)
   // const [isLoggedIn, logIn] = useState(false)
   // const [isLoading, setIsLoading] = useState(true)
@@ -64,17 +77,3 @@ export default function App() {
   //   getCryptoPrices();
   //   console.log(coins)
   // }
-
-  return ( 
-    <SafeAreaView flex='1'>  
-      <NavigationContainer>
-        {/* {userData ? ( */}
-          <Tabs/>
-        {/* ) : ( */}
-          {/* <Button buttonText="Log In" onButtonPress={() => {pressedLogIn()}}/> */}
-        {/* )} */}
-     </NavigationContainer>
-    </SafeAreaView>
-    );
-
-}

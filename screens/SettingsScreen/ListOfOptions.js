@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet,  Text, View, ScrollView, Image, TextInput } from 'react-native';
+import {StyleSheet,  Text, View, ScrollView, Image, TextInput, Pressable, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'
 import { alignSelf } from 'styled-system';
 
@@ -16,22 +16,30 @@ export default function ListOfOptions () {
       "App Version",
       "Log Out",
     ]
+    const CreateAlert = () =>
+    Alert.alert(
+      "Fakepay",
+      "This isn't Shakepay. This is intended to be a demo only",
+      [
+        { text: "OK", onPress: () => console.log("OK Pressed") }
+      ]
+    );
     return (
       <View>
         {list.map((item, i) => {
           if(item === "App Version"){
             return(
-              <View key={i} style={styles.listItem}>
+              <Pressable key={i} style={styles.listItem} onPress={()=>CreateAlert()}>
                 <Text style={styles.textContent}>{item}</Text>
                 <Text style={styles.listIcon}>0.0.0</Text>
-              </View>
+              </Pressable>
             ) 
           }
           return(
-              <View key={i} style={styles.listItem}>
+              <Pressable key={i} style={styles.listItem} onPress={()=>CreateAlert()}>
                 <Text style={styles.textContent}>{item}</Text>
                 <Ionicons name="chevron-forward-outline" style={styles.listIcon} size={25}/>
-              </View>
+              </Pressable>
             )
         })}
       </View>
