@@ -1,28 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Pressable } from 'react-native';
 import BTC from '../assets/bitcoin-btc-logo.svg'
 import ETH from '../assets/eth.svg'
 import { SvgUri } from 'react-native-svg';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function CoinListItem(props) {
   const [cryptoPrices, setCryptoPrices] = [props.cryptoPrices, props.setCryptoPrices]
   const [coins, setCoins] = [props.coins, props.setCoins]
+  // console.log('coins held',coins[2].coinHeld)
+
+
+  // console.log 
+  // let x = coins.length()
+  // if(x === 0) return <> </>
 
   return (
+    // <Stack. 
     <View>
         {            
             coins.map(function (coin, i) {
               if(coin.ticker === 'CAD'){
                 return(
-                  <View style={styles.coinListItem} key={i}>
-                    <SvgUri width="14%" height={38} uri={coin.logo}/>
-                    <View style={styles.coin}>
-                        <Text style={styles.coinName}> {coin.name} </Text>
+                  
+                  <Pressable onPress={()=>props.navigation.navigate(coin.ticker,{coin:coin})} >
+                    <View style={styles.coinListItem} key={i}>
+                      <SvgUri width="14%" height={38} uri={coin.logo}/>
+                      <View style={styles.coin}>
+                          <Text style={styles.coinName}> {coin.name} </Text>
+                      </View>
+                      <View stlye={styles.wallet}>
+                          <Text style={styles.coinHeld}> {parseFloat(coin.coinHeld).toFixed(2)} </Text> 
+                      </View>
                     </View>
-                    <View stlye={styles.wallet}>
-                        <Text style={styles.coinHeld}> {parseFloat(coin.coinHeld).toFixed(2)} </Text> 
-                    </View>
-                  </View>
+                  </Pressable>
+
                 )
               }
               let coinPriceData
@@ -39,15 +52,17 @@ export default function CoinListItem(props) {
               matchCoinToPrice()
               let price = 1
               coinPriceData?(
-                price = coinPriceData,
-                console.log(price)
+                price = coinPriceData
+                // console.log(price)
               ) : (
-                price = 0,
-                console.log(price)
+                price = 0
+                // console.log(price)
               )
-                      price = parseFloat(price).toFixed(2).toLocaleString("en-US", {style:"currency", currency:"USD"})
+                      price = price.toLocaleString("en-US", {style:"currency", currency:"USD"})
               trueValueHeld = trueValueHeld.toLocaleString("en-US", {style:"currency", currency:"USD"})
-                return(
+              // console.log(price)  
+              return(
+                <Pressable onPress={()=>props.navigation.navigate(coin.ticker,{coin:coin.coinPrice,price:price,held:trueValueHeld})}>
                     <View style={styles.coinListItem} key={i}>
                         <SvgUri width="14%" height={35} uri={coin.logo}/>
                         <View style={styles.coin}>
@@ -59,6 +74,7 @@ export default function CoinListItem(props) {
                             <Text style={styles.valueHeld}> {trueValueHeld} </Text>
                         </View>
                     </View>
+                  </Pressable>
                  )
             })
         }

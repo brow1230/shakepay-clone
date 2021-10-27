@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {SafeAreaView, View, Text} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -7,8 +7,21 @@ import Tabs from './components/NavigationTabs'
 import ModalMenu from './components/ModalMenu';
 
 export default function App() {
-  
-  let Stack = createNativeStackNavigator()
+  let Stack = createNativeStackNavigator();
+  const UserDataContext = React.createContext({user:{}});
+  let value = {user:{}}
+
+  const getUserData = () => {
+    
+  }
+  // const [AppState, setAppState] = useState({})
+  // setAppState({
+  //   user:{
+
+  //   }
+  // })
+
+
   return ( 
     <SafeAreaView flex='1'>
       <NavigationContainer>

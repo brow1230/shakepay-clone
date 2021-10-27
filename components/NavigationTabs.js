@@ -12,7 +12,7 @@ import ModalMenu from './ModalMenu';
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = () => {
+const Tabs = (props) => {
   const [isModalMenuOpen, toggleModalMenu] = useState(false)
   let globalModalOptions = [
     {
@@ -40,12 +40,7 @@ const Tabs = () => {
           name="Home" 
           component={HomeStackScreen}
           options={{
-            headerTitle : () => <ShakepayLogo width={40} height={40}/>,
-            headerStyle: {
-              elevation: 0, // remove shadow on Android
-              shadowOpacity: 0, // remove shadow on iOS
-              borderBottomWidth: 0 // Just in case.
-            },
+            headerShown:false,
             tabBarLabel:''
           }}
           />

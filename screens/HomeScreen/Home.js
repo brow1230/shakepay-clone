@@ -1,14 +1,78 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {StyleSheet,  Text, View, ScrollView, RefreshControl } from 'react-native';
 import CoinListItem from '../../components/CoinListItem'
 import Button from '../../components/Button'
 import ModalMenu from '../../components/ModalMenu';
+import ViewCoin from '../ViewCoin';
+import ShakepayLogo from '../../assets/ShakepayLogo.svg'
 
-export default function HomeScreen(){ 
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const HomeStack = createNativeStackNavigator();
+// <Tab.Screen
+//   name="AdminTab"
+//   children={() => <AdminPage userData={this.props.userSettings} />
+
+
+export default function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen 
+      name="List View"
+      component={HomeScreen}
+      options={{
+        headerTitle : () => <ShakepayLogo width={40} height={40}/>,
+        headerShadowVisible:false,
+        headerBackTitleVisible: false,
+      }}
+      />
+      {/* <HomeStack.Screen name="Details" component={DetailsScreen} /> */}
+      <HomeStack.Screen 
+        name="CAD"
+        // children={() => <ViewCoin coin="CAD"/>} 
+        component={ViewCoin}
+        options={{
+          headerTitle : "Dollars",
+          headerTitleStyle : {
+            fontWeight:'500',
+            fontSize: 20
+          },
+          headerShadowVisible:false,
+          headerBackTitleVisible: false,
+        }}/>
+        <HomeStack.Screen 
+        name="BTC"
+        children={() => <ViewCoin coin="BTC" />} 
+        options={{
+          headerTitle : "Bitcoin",
+          headerTitleStyle : {
+            fontWeight:'500',
+            fontSize: 20
+          },
+          headerShadowVisible:false,
+          headerBackTitleVisible: false,
+        }}/>
+        <HomeStack.Screen 
+        name="ETH"
+        children={() => <ViewCoin coin="ETH"/>} 
+        options={{
+          headerTitle : "Ethereum",
+          headerTitleStyle : {
+            fontWeight:'500',
+            fontSize: 20
+          },
+          headerShadowVisible:false,
+          headerBackTitleVisible: false,
+        }}/>
+    </HomeStack.Navigator>
+  );
+}
+function HomeScreen({navigation}){ 
   const [cryptoPrices, setCryptoPrices] = useState([])
   const [coins, setCoins] = useState([])
   const [totalValue, setTotalValue] = useState(0)
   const [isModalMenuOpen, toggleModalMenu] = useState(false)
+  const [refreshing, setRefreshing] = useState(false);
 
   let ModalAddFundsOptions = [
     {
@@ -65,9 +129,11 @@ export default function HomeScreen(){
       console.log("error", error);
     }
   }
-  function getTrueValue(){
+
+
+  const getTrueValue = () => {
     console.log('getting value')
-    let ttv = 0
+    let ttv = 1
     let coinPriceData
     coins.forEach(coin => {
         cryptoPrices.forEach(price =>{
@@ -75,38 +141,51 @@ export default function HomeScreen(){
             console.log(coin.coinHeld)
             coinPriceData = price.quote.CAD.price
             let value = parseFloat(coinPriceData).toFixed(2) * coin.coinHeld 
-            console.log("one", value)
-            console.log("two", ttv)
+            // console.log("one", value)
+            // console.log("two", ttv)
             
             ttv = ttv + value
-            console.log("three", ttv)
+            // console.log("three", ttv)
           }
         })
-    });  
+    });
+    console.log(ttv)
     setTotalValue(ttv)
   }
+
+
+
 
 
   // refresh 
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   }
-  const [refreshing, setRefreshing] = useState(false);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
     getUserData();
     getCryptoPrices();
-    getTrueValue();
+    // getTrueValue();
     wait(600).then(() => { 
       setRefreshing(false)});
   }, []);
 
+  useEffect(() => {
+    let mounted = true;
+    getUserData();
+    getCryptoPrices();
+    getTrueValue();
+    return () => mounted = false;
+  }, [])
 
   return (
     <View style={styles.parentView}>
       
-      <ModalMenu isModalMenuOpen={isModalMenuOpen} toggleModalMenu={toggleModalMenu} options={ModalAddFundsOptions}/>
-      
+      <ModalMenu 
+        isModalMenuOpen={isModalMenuOpen}
+        toggleModalMenu={toggleModalMenu}
+        options={ModalAddFundsOptions}
+        />
       
       <View style={styles.boxStyle}>
         <Text style={styles.dollarAmountText} >  {parseFloat(totalValue).toFixed(2)} </Text>
@@ -130,6 +209,10 @@ export default function HomeScreen(){
           getCoins={setCoins} 
           getPrices={setCryptoPrices}
           totalValue={totalValue}
+          navigation={navigation}
+          // onButtonPress={() => {
+          //   navigation.navigate('BTC')
+          // console.log("pressed")}}
           />
       </ScrollView>      
     </View>
