@@ -2,13 +2,12 @@ import React, {useState, useEffect} from 'react';
 import { Button, Pressable, StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import HomeStackScreen from '../screens/HomeScreen/Home';
+import HomeStack from '../screens/HomeScreen/HomeStack';
 import CardScreen from '../screens/Card';
 import SendCoinScreen from '../screens/SendCoin';
-import SettingsScreen from '../screens/Settings';
 
-import ShakepayLogo from '../assets/ShakepayLogo.svg'
 import ModalMenu from './ModalMenu';
+import SettingsScreenProvider from '../screens/SettingsScreen/SettingsScreenProvider';
 
 const Tab = createBottomTabNavigator();
 
@@ -38,7 +37,7 @@ const Tabs = (props) => {
       <Tab.Navigator >
         <Tab.Screen 
           name="Home" 
-          component={HomeStackScreen}
+          component={HomeStack}
           options={{
             headerShown:false,
             tabBarLabel:''
@@ -85,7 +84,7 @@ const Tabs = (props) => {
             />
         <Tab.Screen 
           name="Settings" 
-          component={SettingsScreen}
+          component={SettingsScreenProvider}
           options={{ 
             headerStyle: {
               elevation: 0, // remove shadow on Android

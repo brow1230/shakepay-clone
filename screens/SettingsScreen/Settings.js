@@ -1,54 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {StyleSheet,  Text, View, ScrollView, Pressable, Alert } from 'react-native';
-import ListOfOptions from './SettingsScreen/ListOfOptions';
-import VerificationStatus from './SettingsScreen/VerificationStatus';
+import ListOfOptions from './ListOfOptions';
+import VerificationStatus from './VerificationStatus';
+import {userDataContext} from '../../Context';
 
-
-export default function SettingsScreen() {
-  let user = {
-    username: 'username',
-    name: 'notsuperpopular',
-    emailAdress: 'dummyemail@gmail.com',
-    phoneNumber: '+17104206969',
-    pointsHistory:[{
-        title:'Waitlist position is locked in 🏁' ,
-        day:'Sep 13th',
-        points:420,
-      },    {
-        title:'#ShakingSats' ,
-        day:'Sep 7th',
-        points:7,
-      },    {
-        title:'#ShakingSats' ,
-        day:'Sep 4th',
-        points:7,
-      },    {
-        title:'Entered waitlist 🎉' ,
-        day:'Jun 15th',
-        points:420,
-      }],
-    verificationsCompleted: [
-      {
-        verificationItem:"account",
-        verificationComplete:false
-      },
-      {
-        verificationItem:"email",
-        verificationComplete:true
-      },
-      {
-        verificationItem:"phoneNumber",
-        verificationComplete:true
-      },
-    ],
-    interactAnwser: "H3LL0TH3R3",
-    signUps:{
-      number:1,
-      activated:0,
-      rewards:0
-    }
-  }
-
+export default function SettingsScreen(value) {
+    // const userDataContext = useContext(userDataContext)
+  let user = value.value.user
+  
   const CreateAlert = () =>
     Alert.alert(
       "Fakepay",
@@ -92,7 +51,6 @@ export default function SettingsScreen() {
             </View>
           </View>
         </View>
-
 
       <ListOfOptions/>
 

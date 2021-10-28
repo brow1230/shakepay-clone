@@ -4,28 +4,105 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Tabs from './components/NavigationTabs'
-import ModalMenu from './components/ModalMenu';
+import {userDataContext} from './Context.js';
+
+// const userDataContext = React.createContext({user:{}});
 
 export default function App() {
   let Stack = createNativeStackNavigator();
-  const UserDataContext = React.createContext({user:{}});
-  let value = {user:{}}
+  let value = {user:{
+    username: 'notsuperpopular',
+    name: 'notsuperpopular',
+    emailAdress: 'dummyemail@gmail.com',
+    phoneNumber: '+17104206969',
+    wallets:[
+      {
+        ticker:'CAD',
+        currency:'Dollars',
+        amountInWallet: 69.99,
+        transactions:{
+          
+        }
+      },
+      {
+        ticker:'BTC',
+        currency:'Bitcoin',
+        amountInWallet: 0.0054435,
+        transactions:{
+          
+        },
+      },
+      {
+        ticker:'ETH',
+        currency:'Ethereum',
+        amountInWallet: 4.2,
+        transactions:{
+          
+        }
+      },
+    ],
+    pointsHistory:[{
+        title:'Waitlist position is locked in 🏁' ,
+        day:'Sep 13th',
+        points:420,
+      },    {
+        title:'#ShakingSats' ,
+        day:'Sep 7th',
+        points:7,
+      },    {
+        title:'#ShakingSats' ,
+        day:'Sep 4th',
+        points:7,
+      },    {
+        title:'Entered waitlist 🎉' ,
+        day:'Jun 15th',
+        points:420,
+      }],
+    verificationsCompleted: [
+      {
+        verificationItem:"account",
+        verificationComplete:false
+      },
+      {
+        verificationItem:"email",
+        verificationComplete:true
+      },
+      {
+        verificationItem:"phoneNumber",
+        verificationComplete:true
+      },
+    ],
+    interactAnwser: "H3LL0TH3R3",
+    signUps:{
+      number:1,
+      activated:0,
+      rewards:0
+    }
+  }}
 
-  const getUserData = () => {
-    
-  }
-  // const [AppState, setAppState] = useState({})
-  // setAppState({
-  //   user:{
-
+  // const getUserData = async () => {
+  //   console.log('backend called')
+  //   const url = "http://192.168.1.109:3030/coins";
+  //   try {
+  //     const response = await fetch(url);
+  //     const json = await response.json();
+  //     console.log('data', json.data)
+      
+  //     value.user = json.data
+  //   } catch (error) {
+  //     console.log("error", error);
   //   }
-  // })
+  // };
+  // getUserData();
+  // console.log('value', value)
 
 
   return ( 
     <SafeAreaView flex='1'>
       <NavigationContainer>
-            <Tabs/>
+      <userDataContext.Provider value={value}>
+          <Tabs/>
+        </userDataContext.Provider>
       </NavigationContainer>
     </SafeAreaView>
     );

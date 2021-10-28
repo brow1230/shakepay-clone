@@ -3,71 +3,15 @@ import {StyleSheet,  Text, View, ScrollView, RefreshControl } from 'react-native
 import CoinListItem from '../../components/CoinListItem'
 import Button from '../../components/Button'
 import ModalMenu from '../../components/ModalMenu';
-import ViewCoin from '../ViewCoin';
-import ShakepayLogo from '../../assets/ShakepayLogo.svg'
-
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-const HomeStack = createNativeStackNavigator();
-// <Tab.Screen
-//   name="AdminTab"
-//   children={() => <AdminPage userData={this.props.userSettings} />
 
 
-export default function HomeStackScreen() {
-  return (
-    <HomeStack.Navigator>
-      <HomeStack.Screen 
-      name="List View"
-      component={HomeScreen}
-      options={{
-        headerTitle : () => <ShakepayLogo width={40} height={40}/>,
-        headerShadowVisible:false,
-        headerBackTitleVisible: false,
-      }}
-      />
-      {/* <HomeStack.Screen name="Details" component={DetailsScreen} /> */}
-      <HomeStack.Screen 
-        name="CAD"
-        // children={() => <ViewCoin coin="CAD"/>} 
-        component={ViewCoin}
-        options={{
-          headerTitle : "Dollars",
-          headerTitleStyle : {
-            fontWeight:'500',
-            fontSize: 20
-          },
-          headerShadowVisible:false,
-          headerBackTitleVisible: false,
-        }}/>
-        <HomeStack.Screen 
-        name="BTC"
-        children={() => <ViewCoin coin="BTC" />} 
-        options={{
-          headerTitle : "Bitcoin",
-          headerTitleStyle : {
-            fontWeight:'500',
-            fontSize: 20
-          },
-          headerShadowVisible:false,
-          headerBackTitleVisible: false,
-        }}/>
-        <HomeStack.Screen 
-        name="ETH"
-        children={() => <ViewCoin coin="ETH"/>} 
-        options={{
-          headerTitle : "Ethereum",
-          headerTitleStyle : {
-            fontWeight:'500',
-            fontSize: 20
-          },
-          headerShadowVisible:false,
-          headerBackTitleVisible: false,
-        }}/>
-    </HomeStack.Navigator>
-  );
-}
-function HomeScreen({navigation}){ 
+export default function HomeScreen(props){ 
+  let navigation = props.navigation
+  let wallets = props.value.user.wallets
+
+  // console.log(wallets)
+
+
   const [cryptoPrices, setCryptoPrices] = useState([])
   const [coins, setCoins] = useState([])
   const [totalValue, setTotalValue] = useState(0)
@@ -101,6 +45,7 @@ function HomeScreen({navigation}){
       const response = await fetch(url);
       const json = await response.json();
       setCoins(json.data)
+      console.log('backend response set')
     } catch (error) {
       console.log("error", error);
     }
@@ -125,38 +70,39 @@ function HomeScreen({navigation}){
         const response = await fetch(url, options)
         const json = await response.json();
         setCryptoPrices(json.data)
+        console.log('crypto api response set')
     } catch (error) {
       console.log("error", error);
     }
   }
-
-
   const getTrueValue = () => {
-    console.log('getting value')
+    // console.log('getting value')
     let ttv = 1
     let coinPriceData
-    coins.forEach(coin => {
-        cryptoPrices.forEach(price =>{
-          if(coin.ticker === price.symbol){
-            console.log(coin.coinHeld)
-            coinPriceData = price.quote.CAD.price
-            let value = parseFloat(coinPriceData).toFixed(2) * coin.coinHeld 
-            // console.log("one", value)
-            // console.log("two", ttv)
+
+    let prices = [cryptoPrices[0],cryptoPrices[1],cryptoPrices[2]]
+
+    wallets.forEach((wallet, i) => {
+      console.log("rank of coin: ", prices[i])
+
+      // console.log("cryptoPrices" , i)
+
+        // cryptoPrices.forEach(price,i =>{
+        //   if(coin.ticker === price.symbol){
+        //     // console.log(coin.coinHeld)
+        //     coinPriceData = price.quote.CAD.price
+        //     let value = parseFloat(coinPriceData).toFixed(2) * wallets.
+        //     // console.log("one", value)
+        //     // console.log("two", ttv)
             
-            ttv = ttv + value
-            // console.log("three", ttv)
-          }
-        })
+        //     ttv = ttv + value
+        //     // console.log("three", ttv)
+        //   }
+        // })
     });
-    console.log(ttv)
+    // console.log(ttv)
     setTotalValue(ttv)
   }
-
-
-
-
-
   // refresh 
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -210,6 +156,7 @@ function HomeScreen({navigation}){
           getPrices={setCryptoPrices}
           totalValue={totalValue}
           navigation={navigation}
+          wallets={wallets}
           // onButtonPress={() => {
           //   navigation.navigate('BTC')
           // console.log("pressed")}}
