@@ -11,8 +11,8 @@ export default function HomeScreen(props){
 
   // console.log(wallets)
 
-
   const [cryptoPrices, setCryptoPrices] = useState([])
+  const [isPricesLoaded, setPricesLoaded] = useState(false)
   const [coins, setCoins] = useState([])
   const [totalValue, setTotalValue] = useState(0)
   const [isModalMenuOpen, toggleModalMenu] = useState(false)
@@ -50,57 +50,54 @@ export default function HomeScreen(props){
       console.log("error", error);
     }
   };
+  
+  
+  
+  
   const getCryptoPrices = async () => {
     console.log('api called')
-    let url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?convert=CAD'
-    const options = {
-      method: 'GET',
-      qs: {
-        'start': '1',
-        'limit': '1',
-        'convert': 'AUD'
-      },
-      headers:{
-        'X-CMC_PRO_API_KEY':'d2a0ea04-8e48-45a5-8fb6-641ee66c181d'
-      },
-      json: true,
-      gzip: true
-    }
+    let key = 'fe398cd49f6f46c74a6c250fccfbd7bc0856812f'
+    let url = `https://api.nomics.com/v1/currencies/ticker?key=${key}&ids=BTC,ETH&convert=CAD&per-page=2&interval=1d`
     try {
-        const response = await fetch(url, options)
+        const response = await fetch(url)
         const json = await response.json();
-        setCryptoPrices(json.data)
+        // console.log(json)
+        // console.log(json.data)
+        setCryptoPrices(json)
+        setPricesLoaded(true)
+        getTrueValue()
         console.log('crypto api response set')
     } catch (error) {
       console.log("error", error);
     }
   }
+
+  // KNOWN BUG WITH getTrueValue
+  // Will not display "Total True Value" at top of homescreen 
+  // Fix is to save Home.js after opening the app, even if no changes have been made.
+  // Cause is unknown.
+
   const getTrueValue = () => {
-    // console.log('getting value')
+    console.log('getting value')
     let ttv = 1
-    let coinPriceData
+    let priceData
 
-    let prices = [cryptoPrices[0],cryptoPrices[1],cryptoPrices[2]]
-
+    let prices = [cryptoPrices[0],cryptoPrices[1]]
+    if(!isPricesLoaded) {
+      return
+    }
     wallets.forEach((wallet, i) => {
-      console.log("rank of coin: ", prices[i])
-
-      // console.log("cryptoPrices" , i)
-
-        // cryptoPrices.forEach(price,i =>{
-        //   if(coin.ticker === price.symbol){
-        //     // console.log(coin.coinHeld)
-        //     coinPriceData = price.quote.CAD.price
-        //     let value = parseFloat(coinPriceData).toFixed(2) * wallets.
-        //     // console.log("one", value)
-        //     // console.log("two", ttv)
-            
-        //     ttv = ttv + value
-        //     // console.log("three", ttv)
-        //   }
-        // })
+      prices.forEach((price, i2) => {
+        if(wallet.ticker === price.symbol){
+          priceData = price.price
+          let val = parseFloat(priceData).toFixed(2) * wallet.amountInWallet
+          ttv = ttv + val
+        }else{
+          console.log('price: ', price)  
+        }
+      })
     });
-    // console.log(ttv)
+    console.log('total wallet value', ttv)
     setTotalValue(ttv)
   }
   // refresh 
@@ -111,7 +108,7 @@ export default function HomeScreen(props){
     setRefreshing(true);
     getUserData();
     getCryptoPrices();
-    // getTrueValue();
+    getTrueValue();
     wait(600).then(() => { 
       setRefreshing(false)});
   }, []);
@@ -120,7 +117,6 @@ export default function HomeScreen(props){
     let mounted = true;
     getUserData();
     getCryptoPrices();
-    getTrueValue();
     return () => mounted = false;
   }, [])
 
@@ -151,9 +147,8 @@ export default function HomeScreen(props){
       >
         <CoinListItem 
           coins={coins} 
-          cryptoPrices={cryptoPrices} 
-          getCoins={setCoins} 
-          getPrices={setCryptoPrices}
+          cryptoPrices={cryptoPrices}
+          isPricesLoaded={isPricesLoaded}
           totalValue={totalValue}
           navigation={navigation}
           wallets={wallets}

@@ -41,7 +41,8 @@ export default function CoinListItem(props) {
                 // console.log(cryptoPrices)
                 cryptoPrices.forEach(function(cryptoCoinPrice, i2){
                   if(cryptoCoinPrice.symbol === wallet.ticker){
-                    coinPriceData = cryptoCoinPrice.quote.CAD.price
+                    coinPriceData = parseFloat(cryptoCoinPrice.price).toFixed(2)
+                    coinPriceData = coinPriceData.toLocaleString("en-US", {style:"currency", currency:"USD"})
                     trueValueHeld = coinPriceData * wallet.amountInWallet
                     console.log(trueValueHeld)
                     // getTotalValue(totalValue+true)
@@ -50,14 +51,16 @@ export default function CoinListItem(props) {
               }
               matchCoinToPrice()
               let price = 1
-              coinPriceData?(
-                price = coinPriceData
-              ) : (
+              coinPriceData
+                ?(
+                price = parseInt(coinPriceData)
+                  )
+                :(
                 price = 0
-              )
+                  ) 
                       price = price.toLocaleString("en-US", {style:"currency", currency:"USD"})
               trueValueHeld = trueValueHeld.toLocaleString("en-US", {style:"currency", currency:"USD"})
-              // console.log(price)  
+              console.log(price)  
               return(
                 <Pressable onPress={()=>props.navigation.navigate(coin.ticker,{wallet:wallet,price:price,held:trueValueHeld})} key={i}>
                     <View style={styles.coinListItem} >

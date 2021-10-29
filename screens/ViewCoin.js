@@ -10,7 +10,7 @@ import UpDash from '../assets/up-dash.svg'
 
 
 export default function ViewCoin(props) {
-    // console.log(props)
+    console.log(props)
     let wallet = props.route.params.wallet, 
          price = props.route.params.price, 
           held = props.route.params.held 
