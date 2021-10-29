@@ -40,7 +40,8 @@ export default function HomeStackScreen() {
         }}/>
         <HomeStack.Screen 
         name="BTC"
-        children={() => <ViewCoin coin="BTC" />} 
+        component={ViewCoin}
+        // children={() => <ViewCoin coin="BTC" />} 
         options={{
           headerTitle : "Bitcoin",
           headerTitleStyle : {
@@ -52,7 +53,8 @@ export default function HomeStackScreen() {
         }}/>
         <HomeStack.Screen 
         name="ETH"
-        children={() => <ViewCoin coin="ETH"/>} 
+        component={ViewCoin}
+        // children={() => <ViewCoin coin="ETH"/>} 
         options={{
           headerTitle : "Ethereum",
           headerTitleStyle : {

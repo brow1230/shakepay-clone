@@ -6,12 +6,36 @@ import Button from '../components/Button';
 import { Ionicons } from '@expo/vector-icons'
 import { borderWidth, fontWeight, height, justifyContent } from 'styled-system';
 import DownDash from '../assets/down-dash.svg'
+import UpDash from '../assets/up-dash.svg'
 
 
-export default function ViewCoin() {
-    // console.log(route.params)
+export default function ViewCoin(props) {
+    // console.log(props)
+    let wallet = props.route.params.wallet, 
+         price = props.route.params.price, 
+          held = props.route.params.held 
       // We can access navigation object via context
     const CurrentBalance = () => {
+        if (wallet.ticker === 'CAD'){
+            return(
+                <View style={styles.currentBalance}>
+                    
+                    <View style={styles.cbGroup}>
+                        <View style={styles.cbTextGroup}>
+                            <Text style={styles.cbBalText}>Balance</Text>
+                        </View>
+                        <View style={styles.cbAmountGroup}>
+                            <Text style={styles.cbAmountCrypto}>{wallet.amountInWallet}</Text>
+                        </View>
+                    </View>
+                    
+                    <View style={styles.cbButtonGroup}>
+                        <Button buttonText="Recieve" buttonIcon="up" a/>
+                        <Button buttonText="Send" buttonIcon="down" a/>
+                    </View>
+                </View>
+            )
+        }
         return(
             <View style={styles.currentBalance}>
                 
@@ -21,8 +45,8 @@ export default function ViewCoin() {
                         <Text style={styles.cbCadText}>In CAD</Text>
                     </View>
                     <View style={styles.cbAmountGroup}>
-                        <Text style={styles.cbAmountCrypto}>0.00</Text>
-                        <Text style={styles.cbAmountDollar}>0.00</Text>
+                        <Text style={styles.cbAmountCrypto}>{wallet.amountInWallet}</Text>
+                        <Text style={styles.cbAmountDollar}>{held}</Text>
                     </View>
                 </View>
                 
@@ -35,59 +59,29 @@ export default function ViewCoin() {
     }
 
     const PreviousTransactions = () => {
-        let transactions = [
-            {
-                title: "@shakingsats",
-                time: "12 hours ago",
-                amount: 0.00000405,
-                in: true
-                // title: "in"
-            },
-            {
-                title: "Sold Bitcoin",
-                time: "12 hours ago",
-                amount: 0.000009,
-                in: false
-                // title: "in"
-            },
-            {
-                title: "@Shakingsats",
-                time: "a day ago",
-                amount: 0.00000405,
-                in: true
-                // title: "in"
-            },
-            {
-                title: "@Shakingsats",
-                time: "Friday",
-                amount: 0.00000405,
-                in: true
-                // title: "in"
-            },
-            {
-                title: "@Shakingsats",
-                time: "Thursday",
-                amount: 0.00000405,
-                in: true
-                // title: "in"
-            },
-            {
-                title: "@Shakingsats",
-                time: "Wednesday",
-                amount: 0.00000405,
-                in: true
-            },
-        ]
+        let transactions = wallet.transactions
+        const CustomIcon = (props) => {
+            let type = props.transaction.type
+            if (type === 'buy') {
+                return <DownDash width={20} height={20} style={styles.trDashIcon}/>
+            }else if (type === 'sell') {
+                return <Ionicons name="swap-horizontal-outline" size={20} color="#079efe" style={styles.trDashIcon}/>
+            }else if (type === 'transferIn') {
+                return <DownDash width={20} height={20} style={styles.trDashIcon}/>
+            }else if (type === 'transferOut') {
+                return <UpDash width={20} height={20} style={styles.trDashIcon}/>                                    
+            }else{
+                return <></>
+                }
+            }
         return (
             <View  style={styles.transactions}>
                 <Text style={styles.trTitle}>Transactions</Text>
                 {
                     transactions.map((transaction,i) => {
                         return (
-                        <View key={i} style={styles.trItem}>
-                            {/* <Ionicons name={transaction.icon}/> */}
-                            <DownDash width={20} height={20} marginRight={5}/>
-
+                            <View key={i} style={styles.trItem}>
+                                <CustomIcon transaction={transaction}/> 
                             <View style={styles.trIInfo}>
                                 <View style={styles.trITextGroup}>
                                     <Text style={styles.trITitle}>{transaction.title}</Text>
@@ -108,10 +102,13 @@ export default function ViewCoin() {
     }
 
     const PriceGraph = () => {
+        if (wallet.ticker === 'CAD'){
+            return <></>
+        }
         return (
             <View style={styles.priceGraph}>
                 <Text style={styles.pgText}>Current Price</Text>
-                <Text style={styles.pgPrice}>$75,534.32</Text>
+                <Text style={styles.pgPrice}>{price}</Text>
                 <View style={styles.pgBox}></View>
             </View>
         )
@@ -211,18 +208,24 @@ let styles = StyleSheet.create({
     },
     
     transactions:{
-         marginHorizontal:'2.5%',
     },
     trTitle:{
         fontSize:20,
         fontWeight:'500',
         paddingVertical:15,
+        marginHorizontal:'2.5%',
 
     },
     trItem:{
         paddingVertical:10,
         flexDirection:'row',
+        marginRight:'2.5%',
         // justifyContent:'space-between'
+    },
+    trDashIcon:{
+        // margin:10,
+         margin:'2.5%',
+
     },
     trIInfo:{
         flexDirection:'row',

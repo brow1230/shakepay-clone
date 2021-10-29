@@ -21,7 +21,7 @@ export default function CoinListItem(props) {
 
               if(coin.ticker === 'CAD'){
                 return(
-                  <Pressable onPress={()=>props.navigation.navigate(coin.ticker,{coin:coin})} key={i}>
+                  <Pressable onPress={()=>props.navigation.navigate(coin.ticker,{coin:coin,wallet:wallet})} key={i}>
                     <View style={styles.coinListItem} >
                       <SvgUri width="14%" height={38} uri={coin.logo}/>
                       <View style={styles.coin}>
@@ -59,7 +59,7 @@ export default function CoinListItem(props) {
               trueValueHeld = trueValueHeld.toLocaleString("en-US", {style:"currency", currency:"USD"})
               // console.log(price)  
               return(
-                <Pressable onPress={()=>props.navigation.navigate(coin.ticker,{coin:coin.coinPrice,price:price,held:trueValueHeld})} key={i}>
+                <Pressable onPress={()=>props.navigation.navigate(coin.ticker,{wallet:wallet,price:price,held:trueValueHeld})} key={i}>
                     <View style={styles.coinListItem} >
                         <SvgUri width="14%" height={35} uri={coin.logo}/>
                         <View style={styles.coin}>

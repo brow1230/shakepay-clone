@@ -20,25 +20,79 @@ export default function App() {
         ticker:'CAD',
         currency:'Dollars',
         amountInWallet: 69.99,
-        transactions:{
-          
-        }
+        transactions:[{
+          title: "Interact e-Transfer",
+          time: "June 3",
+          amount: 100.01,
+          in: false,
+          type: "transferOut"
+      },{
+        title: "Interact e-Transfer",
+        time: "April 20",
+        amount: 420.69,
+        in: true,
+        type: "transferIn"
+    },] 
       },
       {
         ticker:'BTC',
         currency:'Bitcoin',
         amountInWallet: 0.0054435,
-        transactions:{
-          
-        },
+        transactions:[
+          {
+              title: "@shakingsats",
+              time: "12 hours ago",
+              amount: 0.00000405,
+              in: true,
+              type: "transferIn"
+              // title: "in"
+          },
+          {
+              title: "Sold Bitcoin",
+              time: "12 hours ago",
+              amount: 0.000009,
+              in: false,
+              type: "sell"
+              // title: "in"
+          },
+          {
+              title: "@Shakingsats",
+              time: "a day ago",
+              amount: 0.00000405,
+              in: true,
+              type: "transferIn"
+              // title: "in"
+          },
+          {
+              title: "@Shakingsats",
+              time: "Friday",
+              amount: 0.00000405,
+              in: true,
+              type: "transferIn"
+              // title: "in"
+          },
+          {
+              title: "@Shakingsats",
+              time: "Thursday",
+              amount: 0.00000405,
+              in: true,
+              type: "transferIn"
+              // title: "in"
+          },
+          {
+              title: "Recieved Bitcoin",
+              time: "Wednesday",
+              amount: 0.00000405,
+              in: true,
+              type: "buy"
+          },
+        ] ,
       },
       {
         ticker:'ETH',
         currency:'Ethereum',
         amountInWallet: 4.2,
-        transactions:{
-          
-        }
+        transactions:[] 
       },
     ],
     pointsHistory:[{
