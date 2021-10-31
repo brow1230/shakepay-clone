@@ -1,15 +1,39 @@
-import React, { useState, useEffect } from 'react';
-import {SafeAreaView, View,ScrollView, Text, StyleSheet} from 'react-native';
-import { NavigationContainer, NavigationContext } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useEffect, useState } from 'react';
+import { View,ScrollView, Text, StyleSheet} from 'react-native';
 import Button from '../components/Button';
 import { Ionicons } from '@expo/vector-icons'
-import { borderWidth, fontWeight, height, justifyContent } from 'styled-system';
 import DownDash from '../assets/down-dash.svg'
 import UpDash from '../assets/up-dash.svg'
+import SparklineGraph from './HomeScreen/SparklineGraph';
 
 
 export default function ViewCoin(props) {
+    const [priceData, setPriceData] = useState([])
+
+    const getPriceGraphData = async () => {
+        console.log('api called')
+        let key = 'fe398cd49f6f46c74a6c250fccfbd7bc0856812f'
+    let url = `https://api.nomics.com/v1/currencies/sparkline?key=${key}&ids=BTC&start=2020-09-29T00%3A00%3A00Z&convert=CAD`
+        try {
+            const response = await fetch(url)
+            const json = await response.json();
+            setPriceData(json)
+            console.log(json)
+            // console.log(json.data)
+           
+        } catch (error) {
+          console.log("error", error);
+        }
+      }
+
+
+    useEffect(() => {
+        let mounted = true;
+        getPriceGraphData();
+        return () => mounted = false;
+      }, [])
+
+
     console.log(props)
     let wallet = props.route.params.wallet, 
          price = props.route.params.price, 
@@ -100,16 +124,33 @@ export default function ViewCoin(props) {
             </View>
         )
     }
-
+    
     const PriceGraph = () => {
+
+        
+        // function getPriceGraphData () {
+
+        //     let key = 'fe398cd49f6f46c74a6c250fccfbd7bc0856812f'
+    
+        //     // let url = `https://api.nomics.com/v1/currencies/sparkline?key=${key}&ids=BTC&start=${uriDateString}`
+        //     let url = `https://api.nomics.com/v1/currencies/sparkline?key=${key}&ids=BTC&start=2021-09-29T00%3A00%3A00Z&convert=CAD`
+        //     fetch(url)
+        //     .then(res => res.json())
+        //     .then(json => {
+        //         priceData = json
+        //         console.log(priceData)
+        //     })
+            
+        // }
         if (wallet.ticker === 'CAD'){
             return <></>
         }
+
         return (
             <View style={styles.priceGraph}>
                 <Text style={styles.pgText}>Current Price</Text>
                 <Text style={styles.pgPrice}>{price}</Text>
-                <View style={styles.pgBox}></View>
+                <SparklineGraph style={styles.pgBox} data={priceData}/>
             </View>
         )
     }
@@ -117,7 +158,7 @@ export default function ViewCoin(props) {
         <ScrollView height="100%" backgroundColor="white">
             <PriceGraph/>
             <CurrentBalance/>
-            <PreviousTransactions/>
+            {/* <PreviousTransactions/> */}
         </ScrollView>
     );
   }
